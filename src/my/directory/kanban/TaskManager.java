@@ -1,14 +1,14 @@
 package my.directory.kanban;
-
+//
 import java.util.HashMap;
 import java.util.Map;
 
 public class TaskManager {
     private static int taskIdCounter = 0;
 
-    private final Map<Integer, Task> tasks = new HashMap<>();
-    private final Map<Integer, Epic> epics = new HashMap<>();
-    private final Map<Integer, Subtask> subtasks = new HashMap<>();
+    private final HashMap<Integer, Task> tasks = new HashMap<>();
+    private final HashMap<Integer, Epic> epics = new HashMap<>();
+    private final HashMap<Integer, Subtask> subtasks = new HashMap<>();
 
     public Task createTask(String title, String description, TaskStatus status) {
         int taskId = ++taskIdCounter;

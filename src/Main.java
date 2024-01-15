@@ -1,5 +1,5 @@
  import my.directory.kanban.*;
-
+ //
 public class Main {
     public static void main(String[] args) {
         TaskManager taskManager = new TaskManager();
@@ -73,6 +73,7 @@ public class Main {
         System.out.println(taskManager.getEpicById(epic2.getId()));
         System.out.println(taskManager.getEpicById(epic3.getId()));
         System.out.println(taskManager.getEpicById(epic4.getId()));
+
         task1.setStatus(TaskStatus.DONE);
         taskManager.updateTask(task1);
         System.out.println("Обновленная задача 1:");
