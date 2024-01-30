@@ -1,13 +1,14 @@
 package my.directory.kanban;
-//
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Epic extends Task {
     private final List<Subtask> subtasks = new ArrayList<>();
 
-    public Epic(String title, String description, TaskStatus status) {
-        super(title, description, status);
+
+    public Epic(int id, String title, String description, TaskStatus status) {
+        super(id, title, description, status);
     }
 
     public List<Subtask> getSubtasks() {
