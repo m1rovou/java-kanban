@@ -1,5 +1,3 @@
-package tests.test;
-
 import managers.*;
 import my.directory.kanban.*;
 import org.junit.jupiter.api.Test;
@@ -9,39 +7,41 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class HistoryManagerTest {
 
     @Test
-    void testHistoryManagerSavesPreviousVersions() {
-
+    void testAdd() {
         HistoryManager historyManager = new InMemoryHistoryManager();
         TaskManager taskManager = new InMemoryTaskManager(historyManager);
 
+        for (int i = 0; i < 10; i++) {
+            Task task = taskManager.createTask("Тест-задача-" + i, "Описание", TaskStatus.NEW);
+            historyManager.add(task);
+        }
+
+        assertEquals(10, historyManager.getHistory().size());
+
+        Task lastTask = taskManager.createTask("Тест-задача 10", "Описание", TaskStatus.NEW);
+        historyManager.add(lastTask);
+
+        assertEquals(10, historyManager.getHistory().size());
+
+        Task historyTask = historyManager.getHistory().get(0);
+        assertEquals("Тест-задача-1", historyTask.getTitle());
+    }
+
+
+    @Test
+    void testGetHistory() {
+        HistoryManager historyManager = new InMemoryHistoryManager();
+        TaskManager taskManager = new InMemoryTaskManager(historyManager);
 
         Task task = taskManager.createTask("Тест-задача", "Описание", TaskStatus.NEW);
 
-        if (!historyManager.getHistory().isEmpty()) {
-            Task previousVersion = historyManager.getHistory().get(0);
-            assertEquals(TaskStatus.NEW, previousVersion.getStatus());
-            assertEquals("Тест-задача", previousVersion.getTitle());
-            assertEquals("Описание", previousVersion.getDescription());
-        }
+        assertEquals(0, historyManager.getHistory().size());
 
-        task.setStatus(TaskStatus.IN_PROGRESS);
-        taskManager.updateTask(task);
+        historyManager.add(task);
 
-        if (!historyManager.getHistory().isEmpty()) {
-            Task previousVersion = historyManager.getHistory().get(0);
-            assertEquals(TaskStatus.NEW, previousVersion.getStatus());
-            assertEquals("Тест-задача", previousVersion.getTitle());
-            assertEquals("Описание", previousVersion.getDescription());
-        }
+        assertEquals(1, historyManager.getHistory().size());
 
-        task.setStatus(TaskStatus.DONE);
-        taskManager.updateTask(task);
-
-        if (!historyManager.getHistory().isEmpty()) {
-            Task previousVersion = historyManager.getHistory().get(0);
-            assertEquals(TaskStatus.IN_PROGRESS, previousVersion.getStatus());
-            assertEquals("Тест-задача", previousVersion.getTitle());
-            assertEquals("Описание", previousVersion.getDescription());
-        }
+        Task historyTask = historyManager.getHistory().get(0);
+        assertEquals("Тест-задача", historyTask.getTitle());
     }
 }
