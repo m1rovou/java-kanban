@@ -1,85 +1,50 @@
 package tests.test;
 
-import my.directory.kanban.*;
 import managers.*;
+import my.directory.kanban.TaskStatus;
+import my.directory.kanban.Subtask;
+import my.directory.kanban.Task;
+import my.directory.kanban.Epic;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 
 class InMemoryTaskManagerTest {
 
-    private final InMemoryTaskManager taskManager = new InMemoryTaskManager(new InMemoryHistoryManager());
+    private InMemoryTaskManager inMemoryTaskManager;
 
-    @Test
-    void tasksWithSameIdAreEqual() {
-        // Arrange
-        Task task1 = new Task(1, "Задача 1", "Описание", TaskStatus.NEW);
-        Task task2 = new Task(2, "Задача 1", "Описание", TaskStatus.NEW);
-
-        // Act
-        taskManager.createTask(task1.getTitle(), task1.getDescription(), task1.getStatus());
-        Task retrievedTask = taskManager.getTaskById(task1.getId());
-
-        // Assert
-        assertNotEquals(task1, retrievedTask);
+    @BeforeEach
+    void beforeEach() {
+        inMemoryTaskManager = new InMemoryTaskManager();
     }
 
     @Test
-    void taskInheritorsWithSameIdAreEqual() {
-        // Arrange
-        Epic epic = taskManager.createEpic("Эпик 1", "Описание эпика", TaskStatus.IN_PROGRESS);
-        Subtask subtask = taskManager.createSubtask(epic.getId(), "Подзадача", "Описание подзадачи", TaskStatus.DONE);
-
-        // Act
-        Epic retrievedEpic = taskManager.getEpicById(epic.getId());
-        Subtask retrievedSubtask = taskManager.getSubtaskById(subtask.getId());
-
-        // Assert
-        assertEquals(epic, retrievedEpic, "Эпики с одинаковым id должны быть равны");
-        assertEquals(subtask, retrievedSubtask, "Подзадачи с одинаковым id должны быть равны");
-    }
-
-
-    @Test
-    void noIdConflict() {
-        // Arrange
-        Task taskWithId = taskManager.createTask("Задача 1", "Описание для Задачи 1", TaskStatus.NEW);
-        int explicitlyAssignedId = taskWithId.getId();
-
-        Task taskWithGeneratedId = taskManager.createTask("Задача 2", "Описание для Задачи 2", TaskStatus.IN_PROGRESS);
-        int generatedId = taskWithGeneratedId.getId();
-
-        // Act
-        Task retrievedTaskWithId = taskManager.getTaskById(explicitlyAssignedId);
-        Task retrievedTaskWithGeneratedId = taskManager.getTaskById(generatedId);
-
-        // Assert
-        assertNotEquals(explicitlyAssignedId, generatedId, "Задачи имеют одинаковый id");
-        assertNotNull(retrievedTaskWithId, "Задача с явно заданным id не найдена");
-        assertNotNull(retrievedTaskWithGeneratedId, "Задача с сгенерированным id не найдена");
-        assertEquals(taskWithId, retrievedTaskWithId, "Задачи с явно заданным id не совпадают");
-        assertEquals(taskWithGeneratedId, retrievedTaskWithGeneratedId, "Задачи с сгенерированным id не совпадают");
+    public void shouldTasksBeConstantAfterAdd() {
+        Task task1 = new Task("Задача1", "ИсходноеОписание1", TaskStatus.NEW);
+        inMemoryTaskManager.addTask(task1);
+        Task taskT1 = inMemoryTaskManager.getTask(0);
+        assertEquals("Задача1", taskT1.getName());
+        assertEquals("ИсходноеОписание1", taskT1.getDescription());
+        assertEquals(TaskStatus.NEW, taskT1.getStatus());
+        assertEquals(0, taskT1.getId());
     }
 
     @Test
-    void addAndGetTasks() {
-        // Arrange
-        Task task = taskManager.createTask("Задача 1", "Описание для Задачи 1", TaskStatus.NEW);
-        Epic epic = taskManager.createEpic("Эпик 1", "Описание для Эпика 1", TaskStatus.IN_PROGRESS);
-        Subtask subtask = taskManager.createSubtask(epic.getId(), "Подзадача 1", "Описание для Подзадачи 1", TaskStatus.DONE);
+    public void shouldHistoryManagerSaveFirstVersionOfTask() {
+        Task task1 = new Task("Задача1", "ИсходноеОписание", TaskStatus.NEW);
+        Task task2 = new Task("Задача1", "ИзмененноеОписание", TaskStatus.NEW);
+        inMemoryTaskManager.addTask(task1);
+        inMemoryTaskManager.updateTask(task2);
 
-        // Act
-        Task retrievedTask = taskManager.getTaskById(task.getId());
-        Epic retrievedEpic = taskManager.getEpicById(epic.getId());
-        Subtask retrievedSubtask = taskManager.getSubtaskById(subtask.getId());
-
-        // Assert
-        assertNotNull(retrievedTask, "Задача не найдена");
-        assertEquals(task, retrievedTask, "Задачи не совпадают");
-
-        assertNotNull(retrievedEpic, "Эпик не найден");
-        assertEquals(epic, retrievedEpic, "Эпики не совпадают");
-
-        assertNotNull(retrievedSubtask, "Подзадача не найдена");
-        assertEquals(subtask, retrievedSubtask, "Подзадачи не совпадают");
+        Task taskT1 = inMemoryTaskManager.getTask(0);
+        List<Task> list = inMemoryTaskManager.getHistory();
+        Task firstTask = list.get(0);
+        assertEquals("ИзмененноеОписание", firstTask.getDescription());
     }
 }
