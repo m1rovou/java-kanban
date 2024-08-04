@@ -1,31 +1,30 @@
 package my.directory.kanban;
-//
+
 public class Task {
-    private static int taskIdCounter = 0;
+    protected String name;
+    protected String description;
+    protected TaskStatus status;
+    protected int id;
 
-    private final int id;
-    private final String title;
-    private final String description;
-    private TaskStatus status;
-
-    public Task(int id, String title, String description, TaskStatus status) {
-        this.id = id;
-        this.title = title;
+    public Task(String name, String description, TaskStatus status) {
+        this.name = name;
         this.description = description;
         this.status = status;
+        id = 0;
+    }
+    public Task(int id, String name, String description, TaskStatus status) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.id = id;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getTitle() {
-
-        return title;
-    }
-
-    public String getDescription() {
-        return description;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public TaskStatus getStatus() {
@@ -36,13 +35,29 @@ public class Task {
         this.status = status;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public String toString() {
         return "Task{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
+                "name='" + name + '\'' +
+                ", description.length='" + description.length() + '\'' +
                 ", status=" + status +
+                ", id=" + id +
                 '}';
     }
 }

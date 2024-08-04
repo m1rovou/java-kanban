@@ -1,20 +1,19 @@
 package tests.test;
 
-import managers.HistoryManager;
-import managers.InMemoryTaskManager;
 import managers.Managers;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class ManagersTest {
+class ManagerTest {
 
     @Test
-    void getDefaultReturnsInitializedManagers() {
-        InMemoryTaskManager taskManager = (InMemoryTaskManager) Managers.getDefault();
-        assertNotNull(taskManager, "TaskManager не должен быть null");
+    void shouldNotBeNullTaskManager() {
+        assertNotNull(Managers.getDefault());
+    }
 
-        HistoryManager historyManager = Managers.getDefaultHistory();
-        assertNotNull(historyManager, "HistoryManager не должен быть null");
+    @Test
+    void shouldNotBeNullHistoryManager() {
+        assertNotNull(Managers.getDefaultHistory());
     }
 }

@@ -1,45 +1,49 @@
 package managers;
-import my.directory.kanban.*;
-import java.util.HashMap;
+
+import my.directory.kanban.Epic;
+import my.directory.kanban.Subtask;
+import my.directory.kanban.Task;
+
 import java.util.List;
 
 public interface TaskManager {
+    List<Task> getTasks();
 
-    Task createTask(String title, String description, TaskStatus status);
+    List<Subtask> getSubtasks();
 
-    Epic createEpic(String title, String description, TaskStatus status);
+    List<Epic> getEpics();
 
-    Subtask createSubtask(int epicId, String title, String description, TaskStatus status);
+    void clearTasks();
+
+    void clearSubtasks();
+
+    void clearEpics();
+
+    Task getTask(int id);
+
+    Subtask getSubtask(int id);
+
+    Epic getEpic(int id);
+
+    void addTask(Task task);
+
+    void addTask(Subtask subtask);
+
+    void addTask(Epic epic);
 
     void updateTask(Task task);
 
-    void updateEpic(Epic epic);
+    void updateTask(Subtask subtask);
 
-    void updateSubtask(Subtask subtask);
+    void updateTask(Epic epic);
 
-    Task getTaskById(int taskId);
+    void removeTask(int id);
 
-    Epic getEpicById(int epicId);
+    void removeSubtask(int id);
 
-    Subtask getSubtaskById(int subtaskId);
+    void removeEpic(int id);
 
-    HashMap<Integer, Subtask> getSubtasksByEpicId(int epicId);
-
-    void deleteTaskById(int taskId);
-
-    void deleteEpicById(int epicId);
-
-    void deleteSubtaskById(int subtaskId);
-
-    List<Task> getTasks();
-
-    List<Task> getEpics();
-
-    List<Task> getSubtasks();
-
-    List<Task> getEpicSubtasks(int epicId);
-
-    HistoryManager getHistoryManager();
+    List<Subtask> getEpicSubtasks(int id);
 
     List<Task> getHistory();
 }
