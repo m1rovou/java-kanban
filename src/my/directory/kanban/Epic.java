@@ -1,40 +1,81 @@
 package my.directory.kanban;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
 
 public class Epic extends Task {
-    private final List<Integer> subtaskIds;
+    private HashMap<Integer,Subtask> subtasks = new HashMap<>();
 
-    public Epic(String name, String description) {
-        super(name, description, TaskStatus.NEW);
-        this.subtaskIds = new ArrayList<>();
+    public Epic(String title, String description, TaskStatus status) {
+        super(title, description, TaskStatus.NEW);
     }
 
-    public List<Integer> getSubtaskIds() {
-        return subtaskIds;
+
+    public HashMap<Integer, Subtask> getSubtasks() {
+        return subtasks;
     }
 
-    public void addSubtaskIds(int id) {
-        subtaskIds.add(id);
+    public void deleteAllSubtasks() {
+        subtasks.clear();
     }
 
-    public void removeSubtaskIds(int id) {
-        subtaskIds.remove((Integer) id);
+    public void addSubtask(Subtask subtask) {
+//        if (subtask.getEpicId() == this.getId()) {
+//            throw new IllegalArgumentException("Epic Can't add Subtask To Yourself");
+//        }
+        subtasks.put(subtask.getId(),subtask);
     }
 
-    public void clearSubtaskIds() {
-        subtaskIds.clear();
+    public void removeSubtaskById(int id) {
+        subtasks.remove(id);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Epic epic)) return false;
+        if (!super.equals(o)) return false;
+        return Objects.equals(subtasks, epic.subtasks);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), subtasks);
+    }
+
+    public void updateEpicStatus() {
+        if (subtasks.isEmpty()) {
+            setStatus(TaskStatus.NEW);
+            return;
+        }
+
+        boolean allNew = true;
+        boolean allDone = true;
+        for (Subtask subtask : subtasks.values()) {
+            if (subtask.getStatus() != TaskStatus.NEW) {
+                allNew = false;
+            }
+            if (subtask.getStatus() != TaskStatus.DONE) {
+                allDone = false;
+            }
+        }
+        if (allNew) {
+            setStatus(TaskStatus.NEW);
+        } else if (allDone) {
+            setStatus(TaskStatus.DONE);
+        } else {
+            setStatus(TaskStatus.IN_PROGRESS);
+        }
     }
 
     @Override
     public String toString() {
         return "Epic{" +
-                "name=" + name +
-                ", description.length='" + description.length() + '\'' +
-                ", id=" + id +
-                ", status='" + status + '\'' +
-                ", subtaskIds=" + subtaskIds +
+                "id=" + getId() +
+                ", title='" + getTitle() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", status=" + getStatus() +
+                ", subtasks=" + subtasks.values() +
                 '}';
     }
 }

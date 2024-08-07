@@ -1,22 +1,17 @@
 package my.directory.kanban;
 
-public class Task {
-    protected String name;
-    protected String description;
-    protected TaskStatus status;
-    protected int id;
+import java.util.Objects;
 
-    public Task(String name, String description, TaskStatus status) {
-        this.name = name;
+public class Task {
+    private int id;
+    private String title;
+    private String description;
+    private TaskStatus status;
+
+    public Task(String title, String description, TaskStatus status) {
+        this.title = title;
         this.description = description;
-        this.status = status;
-        id = 0;
-    }
-    public Task(int id, String name, String description, TaskStatus status) {
-        this.name = name;
-        this.description = description;
-        this.status = status;
-        this.id = id;
+        this.status = Objects.requireNonNull(status,"Status cannot be null");
     }
 
     public int getId() {
@@ -27,12 +22,12 @@ public class Task {
         this.id = id;
     }
 
-    public TaskStatus getStatus() {
-        return status;
+    public String getTitle() {
+        return title;
     }
 
-    public void setStatus(TaskStatus status) {
-        this.status = status;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {
@@ -43,21 +38,35 @@ public class Task {
         this.description = description;
     }
 
-    public String getName() {
-        return name;
+    public TaskStatus getStatus() {
+        return status;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setStatus(TaskStatus status) {
+        this.status = status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return id == task.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     @Override
     public String toString() {
         return "Task{" +
-                "name='" + name + '\'' +
-                ", description.length='" + description.length() + '\'' +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
                 ", status=" + status +
-                ", id=" + id +
                 '}';
     }
 }
+
