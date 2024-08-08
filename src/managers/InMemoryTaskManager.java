@@ -1,6 +1,6 @@
 package managers;
 
-import my.directory.kanban.*;
+import tasks.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;

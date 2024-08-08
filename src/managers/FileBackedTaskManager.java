@@ -1,6 +1,6 @@
 package managers;
 
-import my.directory.kanban.*;
+import tasks.*;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -42,7 +42,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     private String toString(Task task) {
         StringBuilder sb = new StringBuilder();
         sb.append(task.getId()).append(",");
-        sb.append(getTaskType(task)).append(",");
+        sb.append(task.getType()).append(",");
         sb.append(task.getTitle()).append(",");
         sb.append(task.getStatus()).append(",");
         sb.append(task.getDescription()).append(",");
@@ -76,16 +76,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 return subtask;
             default:
                 throw new IllegalArgumentException("Unknown type: " + type);
-        }
-    }
-
-    private TaskType getTaskType(Task task) {
-        if (task instanceof Subtask) {
-            return TaskType.SUBTASK;
-        } else if (task instanceof Epic) {
-            return TaskType.EPIC;
-        } else {
-            return TaskType.TASK;
         }
     }
 
@@ -154,6 +144,22 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     @Override
     public void deleteAllEpics() {
         super.deleteAllEpics();
+        save();
+    }
+    public void createTask(Task task) {
+        super.createTask(task);
+        save();
+    }
+
+    @Override
+    public void createSubtask(Subtask subtask) {
+        super.createSubtask(subtask);
+        save();
+    }
+
+    @Override
+    public void createEpic(Epic epic) {
+        super.createEpic(epic);
         save();
     }
 

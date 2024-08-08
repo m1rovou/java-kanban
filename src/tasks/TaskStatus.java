@@ -1,4 +1,4 @@
-package my.directory.kanban;
+package tasks;
 public enum TaskStatus {
     NEW,
     IN_PROGRESS,

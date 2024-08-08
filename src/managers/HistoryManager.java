@@ -1,6 +1,6 @@
 package managers;
 
-import my.directory.kanban.Task;
+import tasks.Task;
 
 import java.util.List;
 

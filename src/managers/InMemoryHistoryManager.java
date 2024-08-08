@@ -1,6 +1,6 @@
 package managers;
 
-import my.directory.kanban.Task;
+import tasks.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,7 +52,6 @@ public class InMemoryHistoryManager implements HistoryManager {
         nodeMap.put(task.getId(), newNode);
     }
 
-    // Удаляет узел из связного списка, обновляя ссылки на соседние узлы.
     private void removeNode(Node node) {
         if (node == null) return;
 

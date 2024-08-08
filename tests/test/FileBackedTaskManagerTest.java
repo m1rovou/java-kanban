@@ -2,7 +2,7 @@ package tests.test;
 
 import org.junit.jupiter.api.Test;
 import managers.FileBackedTaskManager;
-import my.directory.kanban.*;
+import tasks.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +32,6 @@ public class FileBackedTaskManagerTest {
         }
     }
 
-    // сохранение и загрузку нескольких задач
     @Test
     public void testLoadingMultipleTasks() throws IOException {
         File tempFile = File.createTempFile("test", ".txt");
@@ -55,7 +54,6 @@ public class FileBackedTaskManagerTest {
 
         manager.deleteAllTasks();
 
-        // Используем публичный метод для загрузки данных
         manager.loadFromFilePublic(tempFile);
 
         assertEquals(0, manager.getTasks().size(), "Number of tasks should be zero");

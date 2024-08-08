@@ -3,8 +3,8 @@ package tests.test;
 import managers.HistoryManager;
 import managers.TaskManager;
 import managers.Managers;
-import my.directory.kanban.Task;
-import my.directory.kanban.TaskStatus;
+import tasks.Task;
+import tasks.TaskStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

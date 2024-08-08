@@ -1,5 +1,6 @@
-package my.directory.kanban;
+package tasks;
 
+import managers.TaskType;
 import java.util.Objects;
 
 public class Task {
@@ -44,6 +45,10 @@ public class Task {
 
     public void setStatus(TaskStatus status) {
         this.status = status;
+    }
+
+    public TaskType getType() {
+        return TaskType.TASK;
     }
 
     @Override

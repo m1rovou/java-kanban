@@ -1,5 +1,6 @@
-package my.directory.kanban;
+package tasks;
 
+import managers.TaskType;
 import java.util.Objects;
 
 public class Subtask extends Task {
@@ -19,6 +20,10 @@ public class Subtask extends Task {
 //            throw new IllegalArgumentException("Subtask cannot be made into its own epic");
 //        }
         this.epicId = epicId;
+    }
+    @Override
+    public TaskType getType() {
+        return TaskType.SUBTASK;
     }
 
     @Override
