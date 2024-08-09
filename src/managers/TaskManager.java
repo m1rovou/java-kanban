@@ -1,6 +1,7 @@
 package managers;
 
 import tasks.*;
+import tasks.Task;
 
 import java.util.List;
 
@@ -50,4 +51,6 @@ public interface TaskManager {
     List<Subtask> getAllSubtaskByEpicId(int epicId);
 
     List<Task> getHistory();
+
+    List<Task> getPrioritizedTasks();
 }

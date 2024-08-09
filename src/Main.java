@@ -5,19 +5,19 @@ public class Main {
     public static void main(String[] args) {
         TaskManager taskManager = Managers.getDefault();
 
-        //Создание задач
+
         Task task1 = new Task("Задача 1", "Описание задачи 1", TaskStatus.IN_PROGRESS);
         Task task2 = new Task("Задача 2", "Описание задачи 2", TaskStatus.NEW);
         taskManager.createTask(task1);
         taskManager.createTask(task2);
 
-        //Создание эпиков
+
         Epic epic1 = new Epic("Эпик 1", "Описание к эпик 1", TaskStatus.NEW);
         Epic epic2 = new Epic("Эпик 2", "Описание к эпик 2", TaskStatus.NEW);
         taskManager.createEpic(epic1);
         taskManager.createEpic(epic2);
 
-        //Создание сабтасков
+
         Subtask subtask1 = new Subtask("Подзадача 1 к эпику 1", "Описание к подзадаче 1", TaskStatus.NEW, epic1.getId());
         Subtask subtask2 = new Subtask("Подзадача 2 к эпику 1", "Описание к подзадаче 2", TaskStatus.NEW, epic1.getId());
         Subtask subtask3 = new Subtask("Подзадача 3 к эпику 2", "Описание к подзадаче 3", TaskStatus.NEW, epic2.getId());
