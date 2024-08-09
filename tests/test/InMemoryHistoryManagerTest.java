@@ -1,42 +1,63 @@
 package tests.test;
 
-import managers.InMemoryHistoryManager;
-import my.directory.kanban.Task;
-import my.directory.kanban.TaskStatus;
+import managers.HistoryManager;
+import managers.TaskManager;
+import managers.Managers;
+import tasks.Task;
+import tasks.TaskStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
+import static org.junit.jupiter.api.Assertions.*;
 class InMemoryHistoryManagerTest {
-    private InMemoryHistoryManager inMemoryHistoryManager;
+    private TaskManager taskManager;
+    private HistoryManager historyManager;
 
     @BeforeEach
-    void setUp() {
-        inMemoryHistoryManager = new InMemoryHistoryManager();
+    public void BeforeEach() {
+        historyManager = Managers.getDefaultHistory();
+        taskManager = Managers.getDefault();
     }
 
+    //убедитесь, что задачи, добавляемые в HistoryManager, сохраняют предыдущую версию задачи и её данных.
     @Test
-    void shouldNotBeNullTaskList() {
-        assertNotNull(inMemoryHistoryManager.getHistory());
-    }
+    void add() {
+        Task task1 = new Task("Task 1", "Descr 1", TaskStatus.NEW);
+        Task task2 = new Task("Task 2", "Descr 2", TaskStatus.NEW);
+        Task task3 = new Task("Task 3", "Descr 3", TaskStatus.NEW);
+        Task task4 = new Task("Task 4", "Descr 4", TaskStatus.NEW);
+        Task task5 = new Task("Task 5", "Descr 5", TaskStatus.NEW);
 
-    @Test
-    void shouldAddTask() {
-        Task task1 = new Task("Задача1", "ИсходноеОписание", TaskStatus.NEW);
-        inMemoryHistoryManager.add(task1);
-        List<Task> list = inMemoryHistoryManager.getHistory();
-        assertNotNull(list);
-        assertEquals(1, list.size());
-        Task firstTask = list.get(0);
-        assertNotNull(firstTask);
-        assertEquals("Задача1", firstTask.getName());
-        assertEquals("ИсходноеОписание", firstTask.getDescription());
-        assertEquals(TaskStatus.NEW, firstTask.getStatus());
-        // Предполагается, что ID автоматически присваивается и увеличивается
-        assertEquals(0, firstTask.getId()); // Обновите это значение, если ID задается по-другому
+        taskManager.createTask(task1);
+        taskManager.createTask(task2);
+        taskManager.createTask(task3);
+        taskManager.createTask(task4);
+        taskManager.createTask(task5);
+
+        // Доступ к задачам для их добавления в историю
+        taskManager.getTaskById(task1.getId());
+        taskManager.getTaskById(task2.getId());
+        taskManager.getTaskById(task3.getId());
+        taskManager.getTaskById(task4.getId());
+        taskManager.getTaskById(task5.getId());
+
+        int historySize = historyManager.getHistory().size();
+        assertEquals(5, historySize, "History size should be 5");
+
+        // Обновление задачи и проверка истории
+        task1.setDescription("Update Description");
+        taskManager.updateTask(task1);
+
+        int updateHistorySize = historyManager.getHistory().size();
+        assertEquals(5, updateHistorySize, "History size should still be 5 after update without new view");
+
+        // Доступ к обновленной задаче для добавления в историю
+        taskManager.getTaskById(task1.getId());
+
+        updateHistorySize = historyManager.getHistory().size();
+        assertEquals(5, updateHistorySize, "History size should still be 5 after viewing updated task");
+
+        Task lastVersionHistory = historyManager.getHistory().get(4); // проверка последней задачи в истории
+        assertEquals("Update Description", lastVersionHistory.getDescription(), "Description should be 'Update Description'");
     }
 }

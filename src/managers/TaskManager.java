@@ -1,8 +1,6 @@
 package managers;
 
-import my.directory.kanban.Epic;
-import my.directory.kanban.Subtask;
-import my.directory.kanban.Task;
+import tasks.*;
 
 import java.util.List;
 
@@ -13,37 +11,43 @@ public interface TaskManager {
 
     List<Epic> getEpics();
 
-    void clearTasks();
 
-    void clearSubtasks();
+    void deleteAllTasks();
 
-    void clearEpics();
+    void deleteAllSubtasks();
 
-    Task getTask(int id);
+    void deleteAllEpics();
 
-    Subtask getSubtask(int id);
 
-    Epic getEpic(int id);
+    Task getTaskById(int id);
 
-    void addTask(Task task);
+    Subtask getSubtaskById(int id);
 
-    void addTask(Subtask subtask);
+    Epic getEpicById(int id);
 
-    void addTask(Epic epic);
+
+    void createTask(Task task);
+
+    void createSubtask(Subtask subtask);
+
+    void createEpic(Epic epic);
+
 
     void updateTask(Task task);
 
-    void updateTask(Subtask subtask);
+    void updateSubtask(Subtask subtask);
 
-    void updateTask(Epic epic);
+    void updateEpic(Epic epic);
 
-    void removeTask(int id);
 
-    void removeSubtask(int id);
+    void deleteTaskById(int id);
 
-    void removeEpic(int id);
+    void deleteSubtaskById(int id);
 
-    List<Subtask> getEpicSubtasks(int id);
+    void deleteEpicById(int id);
+
+
+    List<Subtask> getAllSubtaskByEpicId(int epicId);
 
     List<Task> getHistory();
 }
