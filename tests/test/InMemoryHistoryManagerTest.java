@@ -26,7 +26,7 @@ class InMemoryHistoryManagerTest {
 
     @AfterEach
     public void AfterEach() {
-        taskManager.deleteAllTasks(); // Метод для очистки всех задач в менеджере
+        taskManager.deleteAllTasks();
     }
 
     @Test
@@ -43,7 +43,6 @@ class InMemoryHistoryManagerTest {
         taskManager.createTask(task4);
         taskManager.createTask(task5);
 
-        // Доступ к задачам для их добавления в историю
         taskManager.getTaskById(task1.getId());
         taskManager.getTaskById(task2.getId());
         taskManager.getTaskById(task3.getId());
@@ -53,24 +52,21 @@ class InMemoryHistoryManagerTest {
         int historySize = historyManager.getHistory().size();
         assertEquals(5, historySize, "History size should be 5");
 
-        // Обновление задачи и проверка истории
         task1.setDescription("Update Description");
         taskManager.updateTask(task1);
 
         int updateHistorySize = historyManager.getHistory().size();
         assertEquals(5, updateHistorySize, "History size should still be 5 after update without new view");
 
-        // Доступ к обновленной задаче для добавления в историю
         taskManager.getTaskById(task1.getId());
 
         updateHistorySize = historyManager.getHistory().size();
         assertEquals(5, updateHistorySize, "History size should still be 5 after viewing updated task");
 
-        Task lastVersionHistory = historyManager.getHistory().get(4); // проверка последней задачи в истории
+        Task lastVersionHistory = historyManager.getHistory().get(4);
         assertEquals("Update Description", lastVersionHistory.getDescription(), "Description should be 'Update Description'");
     }
 
-    // Проверка дублирования задач в истории
     @Test
     void testDuplicateInHistory() {
         Task task1 = new Task("Task 1", "Descr 1", TaskStatus.NEW);

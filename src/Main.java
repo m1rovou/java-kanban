@@ -34,19 +34,17 @@ public class Main {
         System.out.println("\nПодзадачи: ");
         taskManager.getSubtasks().forEach(System.out::println);
 
-        //Обновление статусов Задач
         task1.setStatus(TaskStatus.IN_PROGRESS);
         taskManager.updateTask(task1);
         task2.setStatus(TaskStatus.DONE);
         taskManager.updateTask(task2);
 
-        //Обновление статусов сабтасков
         subtask1.setStatus(TaskStatus.DONE);
         taskManager.updateSubtask(subtask1);
-        //Обновление статусов сабтасков
+
         subtask2.setStatus(TaskStatus.IN_PROGRESS);
         taskManager.updateSubtask(subtask2);
-        //Обновление статусов сабтасков
+
         subtask3.setStatus(TaskStatus.DONE);
         taskManager.updateSubtask(subtask3);
 
@@ -59,7 +57,6 @@ public class Main {
         System.out.println("\nПодзадачи после обновления статуса: ");
         taskManager.getSubtasks().forEach(System.out::println);
 
-        //Удаление Задачи и Эпика по ID
         taskManager.deleteTaskById(task1.getId());
         taskManager.deleteEpicById(epic1.getId());
 

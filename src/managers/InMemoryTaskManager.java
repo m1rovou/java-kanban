@@ -25,7 +25,7 @@ public class InMemoryTaskManager implements TaskManager {
         } else if (task2.getStartTime() != null) {
             return 1;
         } else {
-            return task1.getId() - task2.getId();
+            return 0;
         }
     }
 
@@ -55,11 +55,10 @@ public class InMemoryTaskManager implements TaskManager {
         return new ArrayList<>(epics.values());
     }
 
-    @Override
     public void deleteAllTasks() {
         tasks.keySet().forEach(historyManager::remove);
         tasks.clear();
-        sortedTasksByPriority.removeIf(task -> task instanceof Task);
+        sortedTasksByPriority.removeIf(task -> task.getType() == TaskType.TASK);
     }
 
     @Override
@@ -70,9 +69,8 @@ public class InMemoryTaskManager implements TaskManager {
             epic.deleteAllSubtasks();
             epic.updateEpicFields();
         });
-        sortedTasksByPriority.removeIf(task -> task instanceof Subtask);
+        sortedTasksByPriority.removeIf(task -> task.getType() == TaskType.SUBTASK);
     }
-
     @Override
     public void deleteAllEpics() {
         epics.keySet().forEach(historyManager::remove);

@@ -41,7 +41,6 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
         }
     }
 
-    // сохранение и загрузку нескольких задач
     @Test
     public void testLoadingMultipleTasks() throws IOException {
         File tempFile = File.createTempFile("test", ".txt");
@@ -70,7 +69,6 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
         assertEquals(1, manager.getEpics().size(), "Number of epics should match");
         assertEquals(2, manager.getSubtasks().size(), "Number of subtasks should match");
 
-        // Проверяем корректность загруженных данных
         assertEquals(epic1, manager.getEpicById(epic1.getId()), "Epic should match");
         assertEquals(subtask1, manager.getSubtaskById(subtask1.getId()), "Subtask 1 should match");
         assertEquals(subtask2, manager.getSubtaskById(subtask2.getId()), "Subtask 2 should match");
