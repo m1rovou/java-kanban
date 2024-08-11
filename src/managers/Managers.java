@@ -1,7 +1,6 @@
 package managers;
 
 import java.io.File;
-
 public class Managers {
     private static HistoryManager historyManager;
 
@@ -10,7 +9,9 @@ public class Managers {
     }
 
     public static HistoryManager getDefaultHistory() {
-        return new InMemoryHistoryManager();
+        if (historyManager == null) {
+            historyManager = new InMemoryHistoryManager();
+        }
+        return historyManager;
     }
 }
-

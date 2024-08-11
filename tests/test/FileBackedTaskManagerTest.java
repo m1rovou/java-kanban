@@ -1,18 +1,27 @@
-package tests.test;
+package test;
 
 import org.junit.jupiter.api.Test;
 import managers.FileBackedTaskManager;
-import tasks.*;
+import managers.ManagerSaveException;
+import tasks.Epic;
+import tasks.Subtask;
+import tasks.Task;
+import tasks.TaskStatus;
 
 import java.io.File;
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class FileBackedTaskManagerTest {
+public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
 
-    // проверка на сохранение и загрузку пустого файла FileBackedTaskManager
+    @Override
+    protected FileBackedTaskManager createTaskManager() throws IOException {
+        File tempFile = File.createTempFile("test", ".txt");
+        tempFile.deleteOnExit();
+        return new FileBackedTaskManager(tempFile);
+    }
+
     @Test
     public void testCheckForSavingAndLoadingAnEmptyFile() {
         try {
@@ -60,10 +69,29 @@ public class FileBackedTaskManagerTest {
         assertEquals(1, manager.getEpics().size(), "Number of epics should match");
         assertEquals(2, manager.getSubtasks().size(), "Number of subtasks should match");
 
-        // Проверяем корректность загруженных данных
         assertEquals(epic1, manager.getEpicById(epic1.getId()), "Epic should match");
         assertEquals(subtask1, manager.getSubtaskById(subtask1.getId()), "Subtask 1 should match");
         assertEquals(subtask2, manager.getSubtaskById(subtask2.getId()), "Subtask 2 should match");
+    }
+
+    @Test
+    public void testFileNotFoundException() {
+        assertThrows(ManagerSaveException.class, () -> {
+            File file = new File("non_existent_file.txt");
+            FileBackedTaskManager manager = new FileBackedTaskManager(file);
+            manager.loadFromFilePublic(file);
+        });
+    }
+
+    @Test
+    public void testFileAccess() {
+        assertDoesNotThrow(() -> {
+            File tempFile = File.createTempFile("test", ".txt");
+            tempFile.deleteOnExit();
+            FileBackedTaskManager manager = new FileBackedTaskManager(tempFile);
+            manager.savePublic();
+            manager.loadFromFilePublic(tempFile);
+        });
     }
 
 }
