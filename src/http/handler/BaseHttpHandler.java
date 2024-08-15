@@ -24,23 +24,21 @@ public abstract class BaseHttpHandler implements HttpHandler {
     }
 
     protected void sendNotFound(HttpExchange exchange) throws IOException {
-        String response = "Task not found";
-        exchange.sendResponseHeaders(404, response.getBytes(StandardCharsets.UTF_8).length);
-        exchange.getResponseBody().write(response.getBytes(StandardCharsets.UTF_8));
+        exchange.sendResponseHeaders(404, -1);
         exchange.close();
     }
 
     protected void sendHasInteractions(HttpExchange exchange) throws IOException {
-        String response = "Task overlaps with existing tasks";
-        exchange.sendResponseHeaders(406, response.getBytes(StandardCharsets.UTF_8).length);
-        exchange.getResponseBody().write(response.getBytes(StandardCharsets.UTF_8));
+        byte[] response = "Task overlaps with existing tasks".getBytes(StandardCharsets.UTF_8);
+        exchange.sendResponseHeaders(406, response.length);
+        exchange.getResponseBody().write(response);
         exchange.close();
     }
 
     protected void sendError(HttpExchange exchange) throws IOException {
-        String response = "Internal server error";
-        exchange.sendResponseHeaders(500, response.getBytes(StandardCharsets.UTF_8).length);
-        exchange.getResponseBody().write(response.getBytes(StandardCharsets.UTF_8));
+        byte[] response = "Internal server error".getBytes(StandardCharsets.UTF_8);
+        exchange.sendResponseHeaders(500, response.length);
+        exchange.getResponseBody().write(response);
         exchange.close();
     }
 }
