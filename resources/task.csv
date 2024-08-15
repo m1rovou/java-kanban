@@ -1,4 +1,1 @@
 id,type,title,status,description,duration,startTime,endTime,epicId
-2,TASK,Задача 2,DONE,Описание задачи 2,,,
-4,TASK,Эпик 2,DONE,Описание к эпик 2,,,
-7,TASK,Подзадача 3 к эпику 2,DONE,Описание к подзадаче 3,,,4
